@@ -13,6 +13,8 @@ import utils.DBUtil;
 import models.Tasks;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+
 /**
  * Servlet implementation class IndexServlet
  */
@@ -35,9 +37,13 @@ public class IndexServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         List<Tasks> tasks = em.createNamedQuery("getAllTasks", Tasks.class).getResultList();
-        response.getWriter().append(Integer.valueOf(tasks.size()).toString());
 
         em.close();
+
+        request.setAttribute("tasks", tasks);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/index.jsp");
+        rd.forward(request,response);
 
     }
 
